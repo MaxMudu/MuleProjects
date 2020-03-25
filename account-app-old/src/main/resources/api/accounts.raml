@@ -1,0 +1,130 @@
+#%RAML 1.0
+version: v1
+title: Accounts API
+
+types:
+  Account: !include Account-data-type.raml
+  AccountNoID: !include Account-no-id-data-type.raml
+  AccountSingle: !include Account-Single.raml
+
+/accounts:
+  get:
+    queryParameters:
+      Requester-ID:
+        required: true
+      type:
+        enum:
+          - personal
+          - business
+        required: true
+      name:
+        required: false
+      country:
+        required: false
+    responses:
+      200:
+        body:
+          application/json:
+            type: Account []
+            examples:
+              output: !include /examples/AccountExample.raml
+      400:
+        body:
+          application/json:
+            example: 
+                message: Not found
+  post:
+    queryParameters:
+      type:
+        required: true
+    body:
+      application/json:
+        type: AccountNoID []
+        examples:
+              input: !include /examples/AccountNoIdExample.raml
+    responses:
+        200:
+          body:
+            application/json:
+              example:
+                message: Account created (but not really)
+        400:
+          body:
+            application/json:
+              example: 
+                message: Not created
+
+  /{ID}:
+    get:
+      queryParameters:
+        type:
+          required: false
+      responses:
+        200:
+          body:
+            application/json:
+              type: AccountSingle
+              examples:
+                output: !include /examples/AccountSingleExample.raml
+        400:
+          body:
+            application/json:
+              example: 
+                message: Not found
+    put:
+      body:
+        application/json:
+          type: AccountSingle
+          examples:
+              input: !include /examples/AccountSingleExample.raml
+      responses:
+        200:
+          body:
+            application/json:
+              example:
+                message: Account replaced (but not really)
+        400:
+          body:
+            application/json:
+              example: 
+                message: Not replaced
+    patch:
+      body:
+        application/json:
+          type: AccountSingle
+          examples:
+              input: !include /examples/AccountSingleExample.raml
+      responses:
+        200:
+          body:
+            application/json:
+              example:
+                message: Account modified (but not really)
+        400:
+          body:
+            application/json:
+              example: 
+                message: Not modified
+    delete:
+      body:
+        application/json:
+          type: AccountSingle
+          examples:
+              input: !include /examples/AccountSingleExample.raml
+      responses:
+        200:
+          body:
+            application/json:
+              example:
+                message: Account deleted (but not really)
+        400:
+          body:
+            application/json:
+              example: 
+                message: Not deleted
+      
+      
+      
+      
+
+      
